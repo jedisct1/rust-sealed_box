@@ -1,6 +1,6 @@
 # sealed boxes for Rust
 
-This is a pure Rust implementation of [libsodium sealed boxes](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes).
+This Rust crate provides [libsodium sealed boxes](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes) for WebAssembly.
 
 Usage:
 
