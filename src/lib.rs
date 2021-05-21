@@ -60,15 +60,17 @@ pub const ABYTES: usize = 32 + 16;
 /// Encrypt a message `msg` for a peer whoose public key is `peer_pk`
 pub fn seal(msg: impl AsRef<[u8]>, peer_pk: PublicKey) -> Vec<u8> {
     let msg = msg.as_ref();
-    let mut ciphertext = vec![0u8; msg.len() + ABYTES];
+    let ciphertext_len = msg.len() + ABYTES;
+    let mut ciphertext = Vec::with_capacity(ciphertext_len);
     unsafe {
         zig::seal(
             ciphertext.as_mut_ptr(),
-            ciphertext.len(),
+            ciphertext_len,
             msg.as_ptr(),
             msg.len(),
             peer_pk.as_ptr(),
-        )
+        );
+        ciphertext.set_len(ciphertext_len);
     };
     ciphertext
 }
