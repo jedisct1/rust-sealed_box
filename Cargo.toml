@@ -10,18 +10,3 @@ homepage = "https://github.com/jedisct1/rust-sealed_box"
 repository = "https://github.com/jedisct1/rust-sealed_box"
 categories = ["no-std", "cryptography", "wasm"]
 authors = ["Frank Denis <github@pureftpd.org>"]
-
-[dependencies]
-blake2 = "0.9.1"
-crypto_box = "0.6.0"
-generic-array = "0.14.4"
-rand_core = { version = "0.6.2", features = ["getrandom"] }
-
-[profile.release]
-codegen-units = 1
-incremental = false
-panic = "abort"
-lto = "fat"
-
-[profile.bench]
-codegen-units = 1
