@@ -1,4 +1,4 @@
-# sealed boxes for Rust
+# Sealed boxes for Rust/WebAssembly
 
 This Rust crate provides [libsodium sealed boxes](https://libsodium.gitbook.io/doc/public-key_cryptography/sealed_boxes) for WebAssembly.
 

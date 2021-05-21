@@ -1,8 +1,8 @@
 [package]
 name = "sealed_box"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2018"
-description = "libsodium sealed box implementation in Rust"
+description = "Libsodium sealed_box construction for Rust/WebAssembly"
 readme = "README.md"
 keywords = ["crypto", "sealedbox", "sealed_box"]
 license = "MIT"
