@@ -56,6 +56,23 @@ impl KeyPair {
         unsafe { zig::keygen(pk.as_mut_ptr(), sk.as_mut_ptr()) };
         Self { pk, sk }
     }
+
+    /// Serialize a key pair to bytes
+    pub fn to_bytes(&self) -> [u8; 64] {
+        let mut buf = [0u8; 64];
+        buf[0..31].copy_from_slice(&self.pk);
+        buf[32..63].copy_from_slice(&self.sk);
+        return buf;
+    }
+
+    /// Deserialize a key pair from bytes
+    pub fn from_bytes(&self, buf: &[u8; 64]) -> Self {
+        let mut pk = [0u8; 32];
+        let mut sk = [0u8; 32];
+        pk.copy_from_slice(&buf[0..31]);
+        sk.copy_from_slice(&buf[32..63]);
+        Self { pk, sk }
+    }
 }
 
 /// Number of additional bytes in a ciphertext compared to the corresponding plaintext
