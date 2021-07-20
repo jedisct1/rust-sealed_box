@@ -62,7 +62,7 @@ impl KeyPair {
         let mut buf = [0u8; 64];
         buf[0..31].copy_from_slice(&self.pk);
         buf[32..63].copy_from_slice(&self.sk);
-        return buf;
+        buf
     }
 
     /// Deserialize a key pair from bytes
