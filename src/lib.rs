@@ -73,6 +73,11 @@ impl KeyPair {
         sk.copy_from_slice(&buf[32..63]);
         Self { pk, sk }
     }
+
+    /// Create a key pair from components
+    pub fn from_components(pk: PublicKey, sk: SecretKey) -> Self {
+        Self { pk, sk }
+    }
 }
 
 /// Number of additional bytes in a ciphertext compared to the corresponding plaintext
