@@ -75,7 +75,7 @@ impl KeyPair {
     }
 
     /// Create a key pair from components
-    pub fn from_components(pk: PublicKey, sk: SecretKey) -> Self {
+    pub fn new(pk: PublicKey, sk: SecretKey) -> Self {
         Self { pk, sk }
     }
 }
