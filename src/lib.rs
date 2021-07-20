@@ -41,7 +41,10 @@ pub type SecretKey = [u8; 32];
 /// A key pair
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct KeyPair {
+    /// The public key component.
     pub pk: PublicKey,
+
+    /// The secret key component.
     pub sk: SecretKey,
 }
 
