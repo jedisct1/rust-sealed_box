@@ -39,9 +39,10 @@ pub type PublicKey = [u8; 32];
 pub type SecretKey = [u8; 32];
 
 /// A key pair
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct KeyPair {
-    pk: PublicKey,
-    sk: PublicKey,
+    pub pk: PublicKey,
+    pub sk: SecretKey,
 }
 
 impl KeyPair {
@@ -106,6 +107,32 @@ mod test {
     fn test_sealed_box() {
         // Recipient: create a new key pair
         let recipient_kp = sealed_box::KeyPair::create();
+
+        // Message to send
+        let msg = b"test";
+
+        //  Sender: encrypt the message for the recipient whose public key is recipient_kp.pk
+        let ciphertext = sealed_box::seal(msg, recipient_kp.pk);
+
+        // Recipient: decrypt the ciphertext using the key pair
+        let decrypted_msg = sealed_box::open(&ciphertext, &recipient_kp).unwrap();
+        assert_eq!(msg[..], decrypted_msg);
+    }
+
+    #[test]
+    fn test_sealed_box_existing_kp() {
+        // Recipient: create a key pair from existing data
+        let pk = [
+            0x25, 0xb2, 0x9d, 0xb0, 0x35, 0x7a, 0x5d, 0x2c, 0xb7, 0x7d, 0xd2, 0xd5, 0x7a, 0xfb,
+            0xbf, 0x30, 0xa2, 0x80, 0x23, 0xda, 0x5f, 0x2d, 0x7b, 0x80, 0xdf, 0x86, 0x65, 0xe4,
+            0xbb, 0x0d, 0x45, 0x6f,
+        ];
+        let sk = [
+            0xaa, 0x5b, 0xc4, 0xf5, 0x16, 0xe4, 0x26, 0xe2, 0x30, 0xc6, 0x9f, 0xcc, 0x19, 0x62,
+            0x12, 0x67, 0x18, 0xf4, 0x4d, 0x63, 0x41, 0x1d, 0x6d, 0xb4, 0xa9, 0x68, 0xb2, 0xe7,
+            0xa5, 0x64, 0x22, 0x3a,
+        ];
+        let recipient_kp = sealed_box::KeyPair { pk, sk };
 
         // Message to send
         let msg = b"test";
