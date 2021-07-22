@@ -1,6 +1,8 @@
 use core::fmt::{self, Display};
 
 mod zig {
+    use std::os::raw::c_int;
+
     extern "C" {
         pub fn seal(c: *mut u8, c_len: usize, m: *const u8, m_len: usize, pk: *const u8) -> i32;
         pub fn open(
@@ -13,6 +15,8 @@ mod zig {
         ) -> i32;
 
         pub fn keygen(pk: *mut u8, sk: *mut u8);
+
+        pub fn keygen_from_seed(pk: *mut u8, sk: *mut u8, seed: *const u8) -> c_int;
     }
 }
 
@@ -20,6 +24,9 @@ mod zig {
 pub enum Error {
     /// Ciphertext verification failed.
     VerificationFailed,
+
+    /// Weak key detected.
+    WeakKey,
 }
 
 impl std::error::Error for Error {}
@@ -28,6 +35,7 @@ impl Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Error::VerificationFailed => write!(f, "Verification failed"),
+            Error::WeakKey => write!(f, "Weak key detected"),
         }
     }
 }
@@ -37,6 +45,9 @@ pub type PublicKey = [u8; 32];
 
 /// Alias for a secret key
 pub type SecretKey = [u8; 32];
+
+/// Alias for a seed
+pub type Seed = [u8; 32];
 
 /// A key pair
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -55,6 +66,16 @@ impl KeyPair {
         let mut sk = [0u8; 32];
         unsafe { zig::keygen(pk.as_mut_ptr(), sk.as_mut_ptr()) };
         Self { pk, sk }
+    }
+
+    /// Create a new key pair from a seed
+    pub fn from_seed(seed: Seed) -> Result<Self, Error> {
+        let mut pk = [0u8; 32];
+        let mut sk = [0u8; 32];
+        if unsafe { zig::keygen_from_seed(pk.as_mut_ptr(), sk.as_mut_ptr(), seed.as_ptr()) } != 0 {
+            return Err(Error::WeakKey);
+        }
+        Ok(Self { pk, sk })
     }
 
     /// Serialize a key pair to bytes
@@ -169,5 +190,17 @@ mod test {
         let decrypted_msg = sealed_box::open(&ciphertext, &recipient_kp).unwrap();
 
         assert_eq!(msg[..], decrypted_msg);
+    }
+
+    #[test]
+    fn test_keygen_from_seed() {
+        let seed = [0x01u8; 32];
+        let seed_other = [0x02u8; 32];
+        let kp = sealed_box::KeyPair::from_seed(seed).unwrap();
+        let kp_eq = sealed_box::KeyPair::from_seed(seed).unwrap();
+        let kp_other = sealed_box::KeyPair::from_seed(seed_other).unwrap();
+        assert_eq!(kp.sk, kp_eq.sk);
+        assert_eq!(kp.pk, kp_eq.pk);
+        assert_ne!(kp.sk, kp_other.sk);
     }
 }

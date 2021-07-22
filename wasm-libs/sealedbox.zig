@@ -8,7 +8,7 @@ export fn seal(
     m_len: usize,
     pk: [*c]const [SealedBox.public_length]u8,
 ) callconv(.C) i32 {
-    SealedBox.seal(c[0..c_len], m[0..m_len], pk.*) catch |_| return -1;
+    SealedBox.seal(c[0..c_len], m[0..m_len], pk.*) catch return -1;
     return 0;
 }
 
@@ -23,7 +23,7 @@ export fn open(
     SealedBox.open(m[0..m_len], c[0..c_len], .{
         .public_key = pk.*,
         .secret_key = sk.*,
-    }) catch |_| return -1;
+    }) catch return -1;
     return 0;
 }
 
@@ -34,4 +34,15 @@ export fn keygen(
     const kp = SealedBox.KeyPair.create(null) catch unreachable;
     pk.* = kp.public_key;
     sk.* = kp.secret_key;
+}
+
+export fn keygen_from_seed(
+    pk: [*c][SealedBox.public_length]u8,
+    sk: [*c][SealedBox.secret_length]u8,
+    seed: [*c]const [SealedBox.seed_length]u8,
+) callconv(.C) c_int {
+    const kp = SealedBox.KeyPair.create(seed.*) catch return -1;
+    pk.* = kp.public_key;
+    sk.* = kp.secret_key;
+    return 0;
 }
