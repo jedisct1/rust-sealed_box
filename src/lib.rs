@@ -101,7 +101,8 @@ impl KeyPair {
     }
 }
 
-/// Number of additional bytes in a ciphertext compared to the corresponding plaintext
+/// Number of additional bytes in a ciphertext compared to the corresponding
+/// plaintext
 pub const ABYTES: usize = 32 + 16;
 
 /// Encrypt a message `msg` for a peer whoose public key is `peer_pk`
@@ -157,7 +158,8 @@ mod test {
         // Message to send
         let msg = b"test";
 
-        //  Sender: encrypt the message for the recipient whose public key is recipient_kp.pk
+        //  Sender: encrypt the message for the recipient whose public key is
+        // recipient_kp.pk
         let ciphertext = sealed_box::seal(msg, recipient_kp.pk);
 
         // Recipient: decrypt the ciphertext using the key pair
@@ -183,7 +185,8 @@ mod test {
         // Message to send
         let msg = b"test";
 
-        //  Sender: encrypt the message for the recipient whose public key is recipient_kp.pk
+        //  Sender: encrypt the message for the recipient whose public key is
+        // recipient_kp.pk
         let ciphertext = sealed_box::seal(msg, recipient_kp.pk);
 
         // Recipient: decrypt the ciphertext using the key pair
