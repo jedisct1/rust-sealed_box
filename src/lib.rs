@@ -5,7 +5,7 @@ mod zig {
 
     extern "C" {
         pub fn seal(c: *mut u8, c_len: usize, m: *const u8, m_len: usize, pk: *const u8) -> i32;
-        pub fn open(
+        pub fn unseal(
             m: *mut u8,
             m_len: usize,
             c: *const u8,
@@ -131,7 +131,7 @@ pub fn open(ciphertext: impl AsRef<[u8]>, kp: &KeyPair) -> Result<Vec<u8>, Error
     }
     let mut msg = vec![0u8; ciphertext.len() - ABYTES];
     if unsafe {
-        zig::open(
+        zig::unseal(
             msg.as_mut_ptr(),
             msg.len(),
             ciphertext.as_ptr(),

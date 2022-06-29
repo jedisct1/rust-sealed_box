@@ -12,7 +12,7 @@ export fn seal(
     return 0;
 }
 
-export fn open(
+export fn unseal(
     m: [*c]u8,
     m_len: usize,
     c: [*c]const u8,
