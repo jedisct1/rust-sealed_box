@@ -5,5 +5,6 @@ pub fn build(b: *std.build.Builder) !void {
     const lib = b.addStaticLibrary("sealedbox", "sealedbox.zig");
     lib.setTarget(target);
     lib.setBuildMode(.ReleaseSmall);
+    lib.strip = true;
     lib.install();
 }
