@@ -1,6 +1,6 @@
 [package]
 name = "sealed_box"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2018"
 description = "Libsodium sealed_box construction for Rust/WebAssembly"
 readme = "README.md"

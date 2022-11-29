@@ -163,7 +163,7 @@ mod test {
         let ciphertext = sealed_box::seal(msg, recipient_kp.pk);
 
         // Recipient: decrypt the ciphertext using the key pair
-        let decrypted_msg = sealed_box::open(&ciphertext, &recipient_kp).unwrap();
+        let decrypted_msg = sealed_box::open(ciphertext, &recipient_kp).unwrap();
         assert_eq!(msg[..], decrypted_msg);
     }
 
@@ -190,7 +190,7 @@ mod test {
         let ciphertext = sealed_box::seal(msg, recipient_kp.pk);
 
         // Recipient: decrypt the ciphertext using the key pair
-        let decrypted_msg = sealed_box::open(&ciphertext, &recipient_kp).unwrap();
+        let decrypted_msg = sealed_box::open(ciphertext, &recipient_kp).unwrap();
 
         assert_eq!(msg[..], decrypted_msg);
     }
