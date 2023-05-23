@@ -1,8 +1,6 @@
 use core::fmt::{self, Display};
 
 mod zig {
-    use std::os::raw::c_int;
-
     extern "C" {
         pub fn seal(c: *mut u8, c_len: usize, m: *const u8, m_len: usize, pk: *const u8) -> i32;
         pub fn unseal(
@@ -16,7 +14,7 @@ mod zig {
 
         pub fn keygen(pk: *mut u8, sk: *mut u8);
 
-        pub fn keygen_from_seed(pk: *mut u8, sk: *mut u8, seed: *const u8) -> c_int;
+        pub fn keygen_from_seed(pk: *mut u8, sk: *mut u8, seed: *const u8) -> i32;
     }
 }
 

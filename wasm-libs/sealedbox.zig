@@ -40,7 +40,7 @@ export fn keygen_from_seed(
     pk: [*c][SealedBox.public_length]u8,
     sk: [*c][SealedBox.secret_length]u8,
     seed: [*c]const [SealedBox.seed_length]u8,
-) callconv(.C) c_int {
+) callconv(.C) i32 {
     const kp = SealedBox.KeyPair.create(seed.*) catch return -1;
     pk.* = kp.public_key;
     sk.* = kp.secret_key;
