@@ -18,4 +18,4 @@ let decrypted_msg = sealed_box::open(&ciphertext, &recipient_kp).unwrap();
 assert_eq!(msg[..], decrypted_msg);
 ```
 
-Compile with `cargo wasi`.
+Compile with `cargo wasix`.
