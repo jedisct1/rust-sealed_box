@@ -5,10 +5,10 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{ .preferred_optimize_mode = .ReleaseFast });
     const lib = b.addStaticLibrary(.{
         .name = "sealedbox",
-        .root_source_file = .{ .path = "sealedbox.zig" },
+        .root_source_file = b.path("sealedbox.zig"),
         .target = target,
         .optimize = optimize,
+        .strip = true,
     });
-    lib.strip = true;
     b.installArtifact(lib);
 }
