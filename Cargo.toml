@@ -6,7 +6,6 @@ description = "Libsodium sealed_box construction for Rust/WebAssembly"
 readme = "README.md"
 keywords = ["crypto", "sealedbox", "sealed_box"]
 license = "MIT"
-homepage = "https://github.com/jedisct1/rust-sealed_box"
 repository = "https://github.com/jedisct1/rust-sealed_box"
 categories = ["no-std", "cryptography", "wasm"]
 authors = ["Frank Denis <github@pureftpd.org>"]
